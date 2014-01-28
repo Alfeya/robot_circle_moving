@@ -1,0 +1,4 @@
+int64 velocity
+int64 radius
+---
+int64 sum
