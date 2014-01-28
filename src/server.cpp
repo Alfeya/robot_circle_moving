@@ -170,7 +170,7 @@ int main(int argc, char** argv)
 	driver = new RobotDriver( nh );
 	
 	ros::ServiceServer service = nh.advertiseService("robot_circle_moving", add);
-	ROS_INFO("Ready to add two robot circle moving.");
+	ROS_INFO("Ready move robot");
 	ros::spin();
 	
 	delete driver;

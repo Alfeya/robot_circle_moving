@@ -16,8 +16,8 @@ int main(int argc, char** argv)
 	
 	ros::ServiceClient client = nh.serviceClient<robot_circle_moving::RobotCircleMoving>("robot_circle_moving");
 	robot_circle_moving::RobotCircleMoving srv;	
-	srv.request.velocity = atoll(argv[1]);
-	srv.request.radius = atoll(argv[2]);
+	srv.request.velocity = atof(argv[1]);
+	srv.request.radius = atof(argv[2]);
 		
 	if (client.call(srv))
 	{
