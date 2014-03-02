@@ -24,14 +24,14 @@ class RobotDriver
 			nh_ = nh;
 			
 			//set up the publisher for the cmd_vel topic
-			cmd_vel_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1);
+			cmd_vel_pub_ = nh_.advertise<geometry_msgs::Twist>("/cmd_vel_mux/input/navi", 1);
 		}
 
 		//! Drive forward a specified distance based on odometry information
 		bool driveForwardOdom(double distance, double velocity)
 		{
 			//wait for the listener to get the first message
-			listener_.waitForTransform("base_footprint", "odom_combined", 
+			listener_.waitForTransform("base_footprint", "odom", 
 					ros::Time(0), ros::Duration(1.0));
 
 			//we will record transforms here
@@ -39,7 +39,7 @@ class RobotDriver
 			tf::StampedTransform current_transform;
 
 			//record the starting transform from the odometry to the base frame
-			listener_.lookupTransform("base_footprint", "odom_combined", 
+			listener_.lookupTransform("base_footprint", "odom", 
 					ros::Time(0), start_transform);
 
 			//we will be sending commands of type "twist"
@@ -58,7 +58,7 @@ class RobotDriver
 				//get the current transform
 				try
 				{
-					listener_.lookupTransform("base_footprint", "odom_combined", 
+					listener_.lookupTransform("base_footprint", "odom", 
 							ros::Time(0), current_transform);
 				}
 				catch (tf::TransformException ex)
@@ -83,7 +83,7 @@ class RobotDriver
 			while(radians > 2*M_PI) radians -= 2*M_PI;
 
 			//wait for the listener to get the first message
-			listener_.waitForTransform("base_footprint", "odom_combined", 
+			listener_.waitForTransform("base_footprint", "odom", 
 					ros::Time(0), ros::Duration(1.0));
 
 			//we will record transforms here
@@ -91,7 +91,7 @@ class RobotDriver
 			tf::StampedTransform current_transform;
 
 			//record the starting transform from the odometry to the base frame
-			listener_.lookupTransform("base_footprint", "odom_combined", 
+			listener_.lookupTransform("base_footprint", "odom", 
 					ros::Time(0), start_transform);
 
 			//we will be sending commands of type "twist"
@@ -115,7 +115,7 @@ class RobotDriver
 				//get the current transform
 				try
 				{
-					listener_.lookupTransform("base_footprint", "odom_combined", 
+					listener_.lookupTransform("base_footprint", "odom", 
 							ros::Time(0), current_transform);
 				}
 				catch (tf::TransformException ex)
