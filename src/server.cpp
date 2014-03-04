@@ -138,6 +138,30 @@ class RobotDriver
 			if (done) return true;
 			return false;
 		}
+
+		void moveCyclically( double radius, double velocity, int times )
+		{
+			geometry_msgs::Twist base_cmd;
+
+			base_cmd.linear.y = 0;
+			base_cmd.linear.x = velocity;
+			base_cmd.angular.z = velocity / radius;
+
+			double rateFrequency = 10.0;
+
+			ros::Rate rate( rateFrequency );
+
+			int msg_number = times * ( int )( rateFrequency * 2 * M_PI * radius / velocity );
+			while ( --msg_number > 0 )
+			{
+			        cmd_vel_pub_.publish(base_cmd);
+			        rate.sleep();
+			}
+
+			base_cmd.linear.x = 0;
+			base_cmd.angular.z = 0;
+			cmd_vel_pub_.publish(base_cmd);
+		}
 };
 
 RobotDriver* driver;
@@ -149,6 +173,9 @@ bool add(robot_circle_moving::RobotCircleMoving::Request  &req,
 
 	sleep(5);
 
+	driver->moveCyclically( req.radius, req.velocity, 10 );
+
+	/*
 	int n = 20;
 	for(int i = 0; i < n; i++)
 	{
@@ -158,6 +185,7 @@ bool add(robot_circle_moving::RobotCircleMoving::Request  &req,
 		driver->driveForwardOdom( distance, req.velocity );
 		driver->turnOdom(true, angle);
 	}
+	*/
 	
 	return true;
 }
